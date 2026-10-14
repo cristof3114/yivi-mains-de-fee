@@ -1,0 +1,43 @@
+---
+import BeadBag from './BeadBag.astro';
+import { euros } from '../data/sacs.js';
+const { sac } = Astro.props;
+---
+<a class="carte" href={`/sacs/${sac.slug}`}>
+  <div class="carte-visuel">
+    <BeadBag sac={sac} />
+    {sac.vendu ? <span class="pastille pastille-vendu">Vendu</span>
+      : sac.unique ? <span class="pastille">Pièce unique</span>
+      : <span class="pastille pastille-calme">Fait à la commande</span>}
+  </div>
+  <div class="carte-texte">
+    <div class="carte-ligne">
+      <h3>{sac.nom}</h3>
+      <p class="prix">{euros(sac.prix)}</p>
+    </div>
+    <p class="carte-type">{sac.type}</p>
+    <p class="carte-spec">{sac.perles.toLocaleString('fr-FR')} perles · {sac.heures} h de tissage</p>
+  </div>
+</a>
+<style>
+  .carte { display: grid; gap: 1rem; text-decoration: none; color: inherit; }
+  .carte-visuel {
+    position: relative; background: var(--surface); border-radius: var(--radius);
+    padding: 1.75rem 2.5rem 1.25rem; aspect-ratio: 4 / 4.4; max-width: 100%;
+    display: grid; place-items: center; transition: transform 0.25s ease;
+  }
+  .carte:hover .carte-visuel { transform: translateY(-3px); }
+  .pastille {
+    position: absolute; top: 0.9rem; left: 0.9rem; font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.6rem; border-radius: 999px;
+    background: var(--bg); color: var(--gold); border: 1px solid var(--line);
+  }
+  .pastille-calme { color: var(--muted); }
+  .pastille-vendu { color: var(--sold); }
+  .carte-texte { display: grid; gap: 0.15rem; }
+  .carte-ligne { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .carte h3 { font-size: 1.75rem; }
+  .prix { font-family: var(--mono); font-size: 1rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .carte-type { color: var(--muted); }
+  .carte-spec { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+</style>

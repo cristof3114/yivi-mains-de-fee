@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Sur-mesure" description="Commandez un sac en perles fait main à vos couleurs, pour un mariage, une soirée ou un cadeau. Devis gratuit.">
+  <section class="wrap section sm">
+    <div class="sm-intro">
+      <p class="etiquette">Sur-mesure</p>
+      <h1>Votre sac, à vos couleurs</h1>
+      <p class="lead">Décrivez votre envie : Valérie vous répond avec un devis et une proposition de couleurs.</p>
+      <ol class="etapes-sm">
+        <li><b>Vous décrivez</b> l'occasion, les couleurs, le budget.</li>
+        <li><b>Valérie propose</b> un modèle, un prix et un délai.</li>
+        <li><b>Vous validez</b> avec un acompte de 30 % payé en ligne.</li>
+        <li><b>Elle tisse</b> votre sac, en 3 à 5 semaines selon le modèle.</li>
+      </ol>
+      <p class="note-legale">Les créations sur-mesure ne bénéficient pas du droit de rétractation, puisqu'elles sont faites selon vos indications.</p>
+    </div>
+
+    <form class="formulaire js-form" data-merci="Merci ! Valérie vous répond sous 48 heures.">
+      <div class="champ"><label for="sm-nom">Prénom et nom</label><input id="sm-nom" name="nom" required autocomplete="name" /></div>
+      <div class="champ"><label for="sm-email">E-mail</label><input id="sm-email" name="email" type="email" required autocomplete="email" /></div>
+      <div class="deux">
+        <div class="champ">
+          <label for="sm-occasion">Occasion</label>
+          <select id="sm-occasion" name="occasion">
+            <option>Mariage</option><option>Soirée</option><option>Cadeau</option><option>Pour moi, au quotidien</option><option>Autre</option>
+          </select>
+        </div>
+        <div class="champ">
+          <label for="sm-budget">Budget</label>
+          <select id="sm-budget" name="budget">
+            <option>60 à 80 €</option><option>80 à 110 €</option><option>110 à 140 €</option><option>Plus de 140 €</option>
+          </select>
+        </div>
+      </div>
+      <div class="champ"><label for="sm-couleurs">Couleurs souhaitées</label><input id="sm-couleurs" name="couleurs" placeholder="ex. vert sauge et doré" /></div>
+      <div class="champ"><label for="sm-date">Pour quand ?</label><input id="sm-date" name="date" type="date" /></div>
+      <div class="champ"><label for="sm-message">Votre idée</label><textarea id="sm-message" name="message" rows="5" placeholder="Forme, taille, un sac de la boutique qui vous inspire, une photo de la tenue…"></textarea></div>
+      <button class="btn" type="submit">Envoyer ma demande</button>
+      <p class="form-retour" role="status"></p>
+    </form>
+  </section>
+</Base>
+<style>
+  .sm { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .sm-intro { display: grid; gap: 1.25rem; min-width: 0; }
+  .sm-intro h1 { font-size: var(--step-3); }
+  .etapes-sm { margin: 0.5rem 0 0; padding-left: 1.3rem; display: grid; gap: 0.6rem; }
+  .etapes-sm li::marker { font-family: var(--display); color: var(--gold); font-size: 1.2em; }
+  .note-legale { font-size: var(--step--1); color: var(--muted); }
+  .formulaire { background: var(--surface); border-radius: var(--radius); padding: clamp(1.25rem, 4vw, 2.25rem); display: grid; gap: 1rem; min-width: 0; }
+  .deux { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .formulaire .btn { justify-self: start; }
+  @media (max-width: 760px) { .sm, .deux { grid-template-columns: 1fr; } }
+</style>

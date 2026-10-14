@@ -1,0 +1,19 @@
+---
+import Base from './Base.astro';
+const { title, description } = Astro.props;
+---
+<Base title={title} description={description}>
+  <section class="wrap section">
+    <div class="prose legal">
+      <p class="etiquette">Informations</p>
+      <h1>{title}</h1>
+      <p class="a-completer">Modèle à compléter : les éléments entre crochets doivent être remplis avant la mise en ligne.</p>
+      <slot />
+    </div>
+  </section>
+</Base>
+<style>
+  .legal h1 { font-size: var(--step-3); }
+  .a-completer { font-family: var(--mono); font-size: 0.82rem; color: var(--gold); border: 1px dashed var(--line); border-radius: 10px; padding: 0.7rem 0.9rem; }
+  .legal :global(p), .legal :global(li) { color: var(--ink); }
+</style>

@@ -1,0 +1,67 @@
+---
+// Illustration provisoire d'un sac en perles, dessinée perle par perle.
+// Sera remplacée par les photos de Valérie.
+interface Props { sac: { slug: string; nom: string; palette: string[]; motif: string; anse?: number }; size?: string }
+const { sac, size = '100%' } = Astro.props;
+const id = `bag-${sac.slug}`;
+const [c0, c1, c2] = sac.palette;
+const colors = [c0, c1, c2];
+
+const x0 = 22, y0 = 70, w = 156, h = 132;
+const dx = 7.4, dy = 6.6, r = 3.3;
+const cols = Math.ceil(w / dx) + 1, rows = Math.ceil(h / dy) + 1;
+const cx = cols / 2, cy = rows / 2;
+
+const pick = (c: number, l: number): number => {
+  switch (sac.motif) {
+    case 'rayures': return [0, 0, 1, 0, 0, 2].at(l % 6)!;
+    case 'vagues': return [1, 0, 2].at(Math.floor((l + 2.2 * Math.sin(c / 2.2)) / 3) % 3)!;
+    case 'chevrons': { const v = (Math.abs(c - cx) + l) % 7; return v < 2 ? 1 : v < 3 ? 2 : 0; }
+    case 'fleurs': {
+      const centres = [[5, 5], [16, 9], [8, 15], [18, 18]];
+      let d = 99; for (const [a, b] of centres) d = Math.min(d, Math.hypot(c - a, (l - b) * 0.9));
+      return d < 1 ? 2 : d < 3.2 ? 0 : 1;
+    }
+    default: { const v = (Math.abs(c - cx) + Math.abs(l - cy)) % 6; return v < 1 ? 1 : v < 2 ? 2 : 0; }
+  }
+};
+
+const beads: { x: number; y: number; k: number }[] = [];
+for (let l = 0; l < rows; l++) {
+  for (let c = 0; c < cols; c++) {
+    beads.push({ x: x0 + c * dx + (l % 2 ? dx / 2 : 0), y: y0 + l * dy, k: pick(c, l) });
+  }
+}
+
+// anse en perles : demi-cercle au-dessus du sac
+const handle: { x: number; y: number }[] = [];
+for (let i = 0; i <= 26; i++) {
+  const a = Math.PI + (Math.PI * i) / 26;
+  handle.push({ x: 100 + 52 * Math.cos(a), y: 72 + 56 * Math.sin(a) });
+}
+---
+<svg viewBox="0 0 200 215" width={size} role="img" aria-label={`Illustration du sac ${sac.nom}`} class="beadbag">
+  <defs>
+    {colors.map((col, i) => (
+      <radialGradient id={`${id}-g${i}`} cx="35%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85" />
+        <stop offset="28%" stop-color={col} />
+        <stop offset="100%" stop-color={col} stop-opacity="0.82" />
+      </radialGradient>
+    ))}
+    <clipPath id={`${id}-clip`}>
+      <path d={`M${x0 + 6} ${y0} H${x0 + w - 6} Q${x0 + w} ${y0} ${x0 + w + 2} ${y0 + 8} L${x0 + w + 8} ${y0 + h - 16} Q${x0 + w + 9} ${y0 + h} ${x0 + w - 8} ${y0 + h} H${x0 + 8} Q${x0 - 9} ${y0 + h} ${x0 - 8} ${y0 + h - 16} L${x0 - 2} ${y0 + 8} Q${x0} ${y0} ${x0 + 6} ${y0} Z`} />
+    </clipPath>
+  </defs>
+  <g class="handle">
+    {handle.map((p) => <circle cx={p.x} cy={p.y} r="3.4" fill={`url(#${id}-g${sac.anse ?? 1})`} />)}
+  </g>
+  <g clip-path={`url(#${id}-clip)`}>
+    <rect x="0" y="0" width="200" height="215" fill={c2} opacity="0.35" />
+    {beads.map((b) => <circle cx={b.x - 8} cy={b.y} r={r} fill={`url(#${id}-g${b.k})`} />)}
+  </g>
+</svg>
+<style>
+  .beadbag { display: block; max-width: 100%; height: auto; }
+  .beadbag circle { stroke: rgba(0, 0, 0, 0.12); stroke-width: 0.4; }
+</style>

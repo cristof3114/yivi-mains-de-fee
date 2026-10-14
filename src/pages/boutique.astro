@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { sacs } from '../data/sacs.js';
+const dispo = sacs.filter((s) => !s.vendu);
+const partis = sacs.filter((s) => s.vendu);
+const occasions = [...new Set(sacs.flatMap((s) => s.occasions))];
+---
+<Base title="Boutique" description="Tous les sacs en perles de Yivi mains de fée : pochettes de soirée, sacs de mariage, mini sacs, de 65 à 140 €.">
+  <section class="wrap section">
+    <div class="section-tete">
+      <p class="etiquette">Boutique</p>
+      <h1>Les sacs</h1>
+      <p class="lead">Les pièces uniques n'existent qu'en un exemplaire. Les modèles « faits à la commande » sont retissés pour vous en 2 à 3 semaines.</p>
+    </div>
+
+    <div class="filtres" role="group" aria-label="Filtrer par occasion">
+      <button type="button" class="filtre" aria-pressed="true" data-occasion="">Tous</button>
+      {occasions.map((o) => <button type="button" class="filtre" aria-pressed="false" data-occasion={o}>{o}</button>)}
+    </div>
+
+    <div class="grille-sacs js-grille">
+      {dispo.map((sac) => <div data-occasions={sac.occasions.join(',')}><ProductCard sac={sac} /></div>)}
+    </div>
+
+    {partis.length > 0 && (
+      <div class="partis">
+        <div class="section-tete">
+          <p class="etiquette">Déjà partis</p>
+          <h2>Ils ont trouvé leur propriétaire</h2>
+          <p class="lead">Un modèle vous plaît ? Valérie peut tisser une pièce proche, dans vos couleurs.</p>
+        </div>
+        <div class="grille-sacs">
+          {partis.map((sac) => <ProductCard sac={sac} />)}
+        </div>
+      </div>
+    )}
+  </section>
+  <script is:inline>
+    (function () {
+      var boutons = document.querySelectorAll('.filtre');
+      var items = document.querySelectorAll('.js-grille > div');
+      boutons.forEach(function (b) {
+        b.addEventListener('click', function () {
+          boutons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          var o = b.dataset.occasion;
+          items.forEach(function (it) { it.hidden = !!o && it.dataset.occasions.split(',').indexOf(o) === -1; });
+        });
+      });
+    })();
+  </script>
+</Base>
+<style>
+  .filtres { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+  .filtre {
+    font: 500 0.95rem var(--body); color: var(--ink); background: transparent; cursor: pointer;
+    border: 1.5px solid var(--line); border-radius: 999px; padding: 0.5rem 1rem;
+  }
+  .filtre[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .partis { margin-top: clamp(3rem, 8vw, 5rem); padding-top: clamp(2rem, 5vw, 3rem); border-top: 1px solid var(--line); }
+</style>

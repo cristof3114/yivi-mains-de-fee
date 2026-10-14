@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import BeadBag from '../components/BeadBag.astro';
+import { sacs } from '../data/sacs.js';
+---
+<Base title="L'atelier" description="Valérie tisse à la main chaque sac en perles Yivi mains de fée. Son histoire, ses perles, ses étapes de travail.">
+  <section class="wrap section atelier-tete">
+    <div class="section-tete">
+      <p class="etiquette">L'atelier</p>
+      <h1>Des mains de fée et des milliers de perles</h1>
+      <p class="lead">Derrière chaque sac Yivi, il y a Valérie, son aiguille, son fil et beaucoup de patience.</p>
+    </div>
+  </section>
+
+  <section class="wrap histoire">
+    <div class="portrait" role="img" aria-label="Emplacement du portrait de Valérie">
+      <span>Portrait de Valérie à l'atelier</span>
+    </div>
+    <div class="prose">
+      <p class="note">Texte provisoire, à réécrire avec Valérie.</p>
+      <p>Valérie a toujours aimé travailler de ses mains. Un jour, elle a cousu ses premières perles ensemble pour en faire une petite pochette, et ne s'est plus arrêtée.</p>
+      <p>Aujourd'hui, elle dessine elle-même ses motifs, choisit chaque couleur et tisse ses sacs perle après perle. Certains sont des pièces uniques ; d'autres sont des modèles qu'elle refait à la demande, chaque fois un peu différents, comme tout ce qui est fait main.</p>
+      <p>« Yivi », c'est [à compléter : l'origine du nom]. « Mains de fée », c'est ce que lui disent celles qui voient ses sacs de près.</p>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-tete">
+      <p class="etiquette">Les matériaux</p>
+      <h2>Des perles choisies une à une</h2>
+    </div>
+    <div class="materiaux">
+      <div><h3>Rocailles de verre</h3><p>Petites perles régulières, souvent japonaises (Miyuki, Toho), qui donnent un tissage serré et lumineux.</p></div>
+      <div><h3>Perles nacrées</h3><p>Pour les sacs de mariage et de soirée, elles accrochent la lumière comme une parure.</p></div>
+      <div><h3>Fil et doublure</h3><p>Un fil solide pour que le sac garde sa forme, une doublure cousue main pour protéger vos affaires.</p></div>
+    </div>
+  </section>
+
+  <section class="echantillons">
+    <div class="wrap section">
+      <div class="section-tete">
+        <p class="etiquette">Nuancier</p>
+        <h2>Quelques palettes de l'atelier</h2>
+      </div>
+      <div class="nuancier">
+        {sacs.map((s) => (
+          <a href={`/sacs/${s.slug}`} class="nuance">
+            <span class="pastilles">{s.palette.map((c) => <i style={`background:${c}`}></i>)}</span>
+            <span>{s.nom}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap section cta">
+    <h2>Envie d'un sac à vos couleurs ?</h2>
+    <a class="btn" href="/sur-mesure">Imaginer mon sac</a>
+  </section>
+</Base>
+<style>
+  .atelier-tete { padding-bottom: 1rem; }
+  .histoire { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .portrait {
+    aspect-ratio: 4 / 5; max-width: 100%; border-radius: var(--radius); background: var(--surface);
+    border: 1.5px dashed var(--line); display: grid; place-items: center; color: var(--muted); text-align: center; padding: 1rem;
+  }
+  .note { font-family: var(--mono); font-size: 0.8rem; color: var(--gold); }
+  .prose p { color: var(--ink); }
+  .materiaux { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 2rem; }
+  .materiaux div { display: grid; gap: 0.5rem; align-content: start; }
+  .materiaux h3 { font-size: 1.6rem; }
+  .materiaux p { color: var(--muted); }
+  .echantillons { background: var(--surface); border-block: 1px solid var(--line); }
+  .nuancier { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
+  .nuance { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+  .pastilles { display: flex; }
+  .pastilles i { width: 26px; height: 26px; border-radius: 50%; margin-left: -6px; border: 2px solid var(--surface); box-shadow: inset -3px -3px 6px rgba(0,0,0,0.18), inset 3px 3px 5px rgba(255,255,255,0.45); }
+  .pastilles i:first-child { margin-left: 0; }
+  .cta { display: grid; gap: 1.5rem; justify-items: start; }
+  @media (max-width: 760px) { .histoire { grid-template-columns: 1fr; } .portrait { max-width: 360px; } }
+</style>

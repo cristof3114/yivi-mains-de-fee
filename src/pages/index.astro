@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+import BeadBag from '../components/BeadBag.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { sacs } from '../data/sacs.js';
+const vedette = sacs[0];
+const selection = sacs.filter((s) => !s.vendu).slice(0, 3);
+---
+<Base title="Accueil">
+  <section class="hero wrap">
+    <div class="hero-texte">
+      <p class="etiquette">Sacs en perles faits main</p>
+      <h1>Tissés perle <em>après</em> perle, par Valérie.</h1>
+      <p class="lead">Chaque sac demande entre 7 et 18 heures de travail et plusieurs milliers de perles de verre. Des pièces uniques et des modèles refaits pour vous, de 65 à 140 €.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/boutique">Voir les créations</a>
+        <a class="btn btn-ligne" href="/atelier">Découvrir l'atelier</a>
+      </div>
+    </div>
+    <figure class="hero-visuel">
+      <BeadBag sac={vedette} />
+      <figcaption>
+        <span class="etiquette">Pièce n° 1 · {vedette.nom}</span>
+        <span class="hero-chiffres"><b>{vedette.perles.toLocaleString('fr-FR')}</b> perles <b>{vedette.heures} h</b> de tissage</span>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-tete">
+      <p class="etiquette">Disponibles maintenant</p>
+      <h2>Les dernières créations</h2>
+    </div>
+    <div class="grille-sacs">
+      {selection.map((sac) => <ProductCard sac={sac} />)}
+    </div>
+    <p class="voir-tout"><a href="/boutique">Voir tous les sacs →</a></p>
+  </section>
+
+  <section class="geste">
+    <div class="wrap section geste-inner">
+      <div class="section-tete">
+        <p class="etiquette">Le savoir-faire</p>
+        <h2>Trois étapes, des milliers de gestes</h2>
+      </div>
+      <ol class="etapes">
+        <li>
+          <span class="etape-num">1</span>
+          <h3>Le dessin et les couleurs</h3>
+          <p>Valérie dessine le motif sur une grille, perle par perle, puis choisit les teintes parmi des rocailles de verre japonaises.</p>
+        </li>
+        <li>
+          <span class="etape-num">2</span>
+          <h3>Le tissage</h3>
+          <p>Les perles sont cousues une à une. Une pochette de soirée compte plus de 4 000 perles et deux journées de travail.</p>
+        </li>
+        <li>
+          <span class="etape-num">3</span>
+          <h3>Les finitions</h3>
+          <p>Doublure, fermoir, anse : chaque sac est vérifié, signé et emballé à la main avant de partir chez vous.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section wrap sur-mesure-bloc">
+    <div>
+      <p class="etiquette">Sur-mesure</p>
+      <h2>Un sac à vos couleurs</h2>
+    </div>
+    <div class="sm-texte">
+      <p class="lead">Pour un mariage, un cadeau ou une tenue précise, Valérie crée votre sac : vous choisissez les couleurs et l'occasion, elle vous envoie un devis.</p>
+      <a class="btn" href="/sur-mesure">Demander un devis</a>
+    </div>
+  </section>
+
+  <section class="wrap promesses">
+    <div><p class="etiquette">Livraison</p><p>Colissimo suivi ou point relais, emballage soigné.</p></div>
+    <div><p class="etiquette">Paiement</p><p>Carte bancaire, Apple Pay ou Google Pay, paiement sécurisé.</p></div>
+    <div><p class="etiquette">Retours</p><p>14 jours pour changer d'avis sur les sacs du catalogue.</p></div>
+  </section>
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; padding-block: clamp(2.5rem, 7vw, 5.5rem); }
+  .hero-texte { display: grid; gap: 1.4rem; min-width: 0; }
+  .hero h1 em { color: var(--accent); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.4rem; }
+  .hero-visuel { margin: 0; display: grid; gap: 1rem; justify-items: center; }
+  .hero-visuel :global(svg) { width: min(100%, 420px); filter: drop-shadow(0 18px 30px rgba(42, 24, 48, 0.18)); }
+  .hero-visuel figcaption { display: grid; justify-items: center; gap: 0.3rem; text-align: center; }
+  .hero-chiffres { font-family: var(--mono); font-size: 0.9rem; color: var(--muted); }
+  .hero-chiffres b { color: var(--ink); font-weight: 500; }
+  .voir-tout { margin-top: 2rem; }
+  .voir-tout a { font-weight: 600; color: var(--accent); text-decoration: none; }
+
+  .geste { background: var(--surface); border-block: 1px solid var(--line); }
+  .etapes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 2.5rem; }
+  .etapes li { display: grid; gap: 0.6rem; align-content: start; }
+  .etape-num { font-family: var(--display); font-size: 3.4rem; line-height: 1; color: var(--gold); }
+  .etapes p { color: var(--muted); }
+
+  .sur-mesure-bloc { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: end; }
+  .sm-texte { display: grid; gap: 1.3rem; justify-items: start; }
+
+  .promesses { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1.5rem; padding-block: 2rem 3rem; border-top: 1px solid var(--line); }
+  .promesses div { display: grid; gap: 0.35rem; }
+  .promesses p:not(.etiquette) { color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .hero, .sur-mesure-bloc { grid-template-columns: 1fr; }
+    .hero-visuel { order: -1; }
+    .hero-visuel :global(svg) { width: min(100%, 300px); }
+  }
+</style>

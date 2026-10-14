@@ -1,0 +1,117 @@
+---
+import Base from '../../layouts/Base.astro';
+import BeadBag from '../../components/BeadBag.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { sacs, euros } from '../../data/sacs.js';
+
+export function getStaticPaths() {
+  return sacs.map((sac) => ({ params: { slug: sac.slug }, props: { sac } }));
+}
+const { sac } = Astro.props;
+const autres = sacs.filter((s) => s.slug !== sac.slug && !s.vendu).slice(0, 3);
+const numero = sacs.indexOf(sac) + 1;
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: `${sac.nom}, ${sac.type.toLowerCase()} en perles`,
+  description: sac.resume,
+  brand: { '@type': 'Brand', name: 'Yivi mains de fée' },
+  material: sac.perlesType,
+  offers: {
+    '@type': 'Offer',
+    price: sac.prix,
+    priceCurrency: 'EUR',
+    availability: sac.vendu ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+  },
+};
+---
+<Base title={`${sac.nom}, ${sac.type.toLowerCase()} en perles`} description={`${sac.resume} ${euros(sac.prix)}, fait main.`}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
+  <section class="wrap fiche">
+    <nav class="fil" aria-label="Fil d'Ariane"><a href="/boutique">Boutique</a> / {sac.nom}</nav>
+    <div class="fiche-grille">
+      <div class="fiche-visuel">
+        <BeadBag sac={sac} />
+        <p class="note-photo">Illustration provisoire. Les photos du sac (face, dos, intérieur, détail, porté) prendront cette place.</p>
+      </div>
+      <div class="fiche-info">
+        <p class="etiquette">{sac.type}{sac.unique ? ' · pièce unique' : ' · fait à la commande'}</p>
+        <h1>{sac.nom}</h1>
+        <p class="fiche-prix">{euros(sac.prix)} <span>TTC</span></p>
+        <p class="fiche-resume">{sac.resume}</p>
+
+        {sac.vendu ? (
+          <div class="achat">
+            <p class="statut statut-vendu">Ce sac a trouvé sa propriétaire.</p>
+            <a class="btn" href="/sur-mesure">Commander un modèle proche</a>
+          </div>
+        ) : sac.stripeLink ? (
+          <div class="achat">
+            <a class="btn" href={sac.stripeLink}>Acheter · {euros(sac.prix)}</a>
+            <p class="achat-note">{sac.unique ? 'Exemplaire unique, expédié sous 48 h.' : 'Tissé pour vous, expédié sous 2 à 3 semaines.'}</p>
+          </div>
+        ) : (
+          <div class="achat">
+            <a class="btn" href="/contact">Réserver ce sac</a>
+            <p class="achat-note">Le paiement en ligne sera activé au lancement du site. {sac.unique ? 'Exemplaire unique, expédié sous 48 h.' : 'Tissé pour vous, expédié sous 2 à 3 semaines.'}</p>
+          </div>
+        )}
+
+        <div class="identite">
+          <p class="etiquette">Fiche d'identité</p>
+          <dl>
+            <div><dt>Pièce</dt><dd>n° {String(numero).padStart(3, '0')}</dd></div>
+            <div><dt>Perles</dt><dd>{sac.perles.toLocaleString('fr-FR')}</dd></div>
+            <div><dt>Tissage</dt><dd>{sac.heures} heures</dd></div>
+            <div><dt>Dimensions</dt><dd>{sac.dimensions}</dd></div>
+            <div><dt>Poids</dt><dd>{sac.poids}</dd></div>
+            <div><dt>Contient</dt><dd>{sac.contenance}</dd></div>
+            <div><dt>Matière</dt><dd>{sac.perlesType}</dd></div>
+          </dl>
+        </div>
+
+        <details>
+          <summary>Livraison et retours</summary>
+          <p>Colissimo suivi ou point relais Mondial Relay, en France et en Europe. Livraison offerte dès 100 €. Vous avez 14 jours pour changer d'avis sur les sacs du catalogue. <a href="/livraison-retours">Tous les détails</a></p>
+        </details>
+        <details>
+          <summary>Entretien</summary>
+          <p>Rangez le sac à plat, à l'abri du soleil direct. Pour le nettoyer, un chiffon doux légèrement humide suffit ; évitez de le plier.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  {autres.length > 0 && (
+    <section class="wrap section">
+      <div class="section-tete"><h2>Vous aimerez aussi</h2></div>
+      <div class="grille-sacs">{autres.map((s) => <ProductCard sac={s} />)}</div>
+    </section>
+  )}
+</Base>
+<style>
+  .fiche { padding-block: 1.5rem clamp(2rem, 6vw, 4rem); }
+  .fil { font-size: var(--step--1); color: var(--muted); margin-bottom: 1.5rem; }
+  .fil a { color: var(--muted); }
+  .fiche-grille { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .fiche-visuel { background: var(--surface); border-radius: var(--radius); padding: clamp(1.5rem, 5vw, 3.5rem); display: grid; gap: 1.25rem; justify-items: center; }
+  .fiche-visuel :global(svg) { width: min(100%, 440px); }
+  .note-photo { font-size: var(--step--1); color: var(--muted); text-align: center; max-width: 40ch; }
+  .fiche-info { display: grid; gap: 1.25rem; min-width: 0; }
+  .fiche-info h1 { font-size: var(--step-3); }
+  .fiche-prix { font-family: var(--mono); font-size: 1.5rem; }
+  .fiche-prix span { font-size: 0.85rem; color: var(--muted); }
+  .fiche-resume { font-size: var(--step-1); color: var(--muted); }
+  .achat { display: grid; gap: 0.6rem; justify-items: start; padding-block: 0.5rem; }
+  .achat-note { font-size: var(--step--1); color: var(--muted); }
+  .statut-vendu { color: var(--sold); font-weight: 600; }
+  .identite { border-top: 1px solid var(--line); padding-top: 1.25rem; display: grid; gap: 0.8rem; }
+  dl { margin: 0; display: grid; gap: 0; }
+  dl div { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; padding-block: 0.55rem; border-bottom: 1px dashed var(--line); }
+  dt { font-family: var(--mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); padding-top: 0.15rem; }
+  dd { margin: 0; font-variant-numeric: tabular-nums; }
+  details { border-bottom: 1px solid var(--line); padding-block: 0.9rem; }
+  summary { cursor: pointer; font-weight: 600; }
+  details p { margin-top: 0.6rem; color: var(--muted); }
+  @media (max-width: 760px) { .fiche-grille { grid-template-columns: 1fr; } }
+</style>

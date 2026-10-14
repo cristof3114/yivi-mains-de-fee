@@ -1,0 +1,219 @@
+---
+interface Props { title: string; description?: string }
+const { title, description = 'Sacs en perles tissés à la main par Valérie. Pièces uniques et modèles faits à la commande, de 50 à 140 €.' } = Astro.props;
+const fullTitle = title === 'Accueil' ? 'Yivi mains de fée' : `${title} · Yivi mains de fée`;
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const nav = [
+  { href: '/boutique', label: 'Boutique' },
+  { href: '/atelier', label: "L'atelier" },
+  { href: '/sur-mesure', label: 'Sur-mesure' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{fullTitle}</title>
+  <meta name="claude:viewport-fit-sides" content="cover" />
+  <meta name="description" content={description} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" />
+</head>
+<body>
+  <p class="apercu">Aperçu du site : les sacs, illustrations et textes sont des exemples en attendant les photos de Valérie.</p>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="/" class="marque" aria-label="Yivi mains de fée, accueil">
+        <span class="marque-nom">Yivi</span>
+        <span class="marque-sous">mains de fée</span>
+      </a>
+      <nav aria-label="Menu principal">
+        <ul>
+          {nav.map((n) => (
+            <li><a href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-marque">
+        <p class="marque-nom">Yivi</p>
+        <p>Sacs en perles tissés à la main, perle après perle, par Valérie.</p>
+      </div>
+      <div>
+        <p class="etiquette">Boutique</p>
+        <ul>
+          <li><a href="/boutique">Tous les sacs</a></li>
+          <li><a href="/sur-mesure">Commande sur-mesure</a></li>
+          <li><a href="/livraison-retours">Livraison et retours</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="etiquette">Informations</p>
+        <ul>
+          <li><a href="/mentions-legales">Mentions légales</a></li>
+          <li><a href="/cgv">Conditions générales de vente</a></li>
+          <li><a href="/confidentialite">Confidentialité</a></li>
+        </ul>
+      </div>
+      <form class="newsletter js-form" data-merci="Merci, vous recevrez les prochaines créations en avant-première.">
+        <label for="nl-email" class="etiquette">Les nouvelles créations en avant-première</label>
+        <div class="nl-row">
+          <input id="nl-email" name="email" type="email" required placeholder="votre@email.fr" autocomplete="email" />
+          <button type="submit" class="btn btn-petit">S'inscrire</button>
+        </div>
+        <p class="form-retour" role="status"></p>
+      </form>
+    </div>
+    <div class="wrap footer-bas">
+      <p>© {new Date().getFullYear()} Yivi mains de fée · Fait main en France</p>
+    </div>
+  </footer>
+
+  <script is:inline>
+    document.querySelectorAll('.js-form').forEach(function (f) {
+      f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var out = f.querySelector('.form-retour');
+        if (out) out.textContent = f.dataset.merci + ' (Aperçu : envoi pas encore branché.)';
+      });
+    });
+  </script>
+</body>
+</html>
+
+<style is:global>
+  /* Mise en page : vitrine d'atelier, beaucoup d'air, chaque sac présenté avec son étiquette d'artisan. */
+  :root {
+    --bg: #f5f1f4;
+    --surface: #fffcfd;
+    --ink: #2a1830;
+    --muted: #6d5a72;
+    --line: #e3d9e4;
+    --accent: #0e6c69;
+    --accent-ink: #ffffff;
+    --gold: #9c7126;
+    --sold: #8f3b4c;
+    --display: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+    --body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --step--1: 0.875rem;
+    --step-0: 1.0625rem;
+    --step-1: 1.3rem;
+    --step-2: 1.75rem;
+    --step-3: clamp(2.2rem, 5vw, 3.2rem);
+    --step-4: clamp(2.8rem, 8vw, 5.4rem);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17101a; --surface: #211825; --ink: #f2eaf3; --muted: #b9a9bd; --line: #3a2d3f;
+      --accent: #5ec3bb; --accent-ink: #0b1f1e; --gold: #d8b062; --sold: #e08a9c; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17101a; --surface: #211825; --ink: #f2eaf3; --muted: #b9a9bd; --line: #3a2d3f;
+    --accent: #5ec3bb; --accent-ink: #0b1f1e; --gold: #d8b062; --sold: #e08a9c; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.6;
+  }
+  img, svg { max-width: 100%; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px;
+  }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.08; text-wrap: balance; margin: 0; }
+  h1 { font-size: var(--step-4); letter-spacing: -0.01em; }
+  h2 { font-size: var(--step-3); }
+  h3 { font-size: var(--step-2); }
+  p { margin: 0; }
+  em { font-family: var(--display); font-style: italic; font-size: 1.08em; }
+
+  .wrap {
+    max-width: 1160px;
+    margin-inline: auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  .prose { max-width: 64ch; display: grid; gap: 1rem; }
+  .prose h2 { font-size: var(--step-2); margin-top: 1.2rem; }
+  .prose ul { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.4rem; }
+  .section { padding-block: clamp(3rem, 8vw, 6rem); }
+  .section-tete { display: grid; gap: 0.75rem; margin-bottom: 2.25rem; max-width: 60ch; }
+  .etiquette {
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+  }
+  .lead { font-size: var(--step-1); color: var(--muted); max-width: 52ch; }
+
+  .apercu {
+    background: var(--ink); color: var(--bg); text-align: center; font-size: var(--step--1);
+    padding-block: 0.5rem;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  .site-header { border-bottom: 1px solid var(--line); background: var(--bg); }
+  .header-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 2rem; padding-block: 1.1rem; }
+  .marque { text-decoration: none; display: flex; align-items: baseline; gap: 0.6rem; }
+  .marque-nom { font-family: var(--display); font-size: 2.1rem; line-height: 1; }
+  .marque-sous { font-family: var(--display); font-style: italic; font-size: 1.2rem; color: var(--gold); }
+  nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+  nav a { text-decoration: none; font-weight: 500; padding-block: 0.3rem; border-bottom: 1.5px solid transparent; }
+  nav a:hover { border-bottom-color: var(--line); }
+  nav a[aria-current="page"] { border-bottom-color: var(--accent); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    font: 600 1rem/1 var(--body); text-decoration: none; cursor: pointer;
+    background: var(--accent); color: var(--accent-ink); border: 1.5px solid var(--accent);
+    border-radius: 999px; padding: 0.95rem 1.6rem; transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-ligne { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn-petit { padding: 0.7rem 1.1rem; font-size: 0.95rem; }
+
+  .grille-sacs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: clamp(1.25rem, 3vw, 2.25rem); }
+
+  input, textarea, select {
+    font: inherit; color: var(--ink); background: var(--surface); width: 100%;
+    border: 1.5px solid var(--line); border-radius: 10px; padding: 0.75rem 0.9rem;
+  }
+  label { font-weight: 500; }
+  .champ { display: grid; gap: 0.35rem; }
+  .form-retour { color: var(--accent); font-weight: 500; min-height: 1.4em; }
+
+  .site-footer { border-top: 1px solid var(--line); margin-top: 2rem; background: var(--surface); }
+  .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 2rem; padding-block: 3rem 2rem; }
+  .footer-grid ul { list-style: none; margin: 0.7rem 0 0; padding: 0; display: grid; gap: 0.4rem; }
+  .footer-grid a { text-decoration: none; color: var(--muted); }
+  .footer-grid a:hover { color: var(--ink); }
+  .footer-marque { display: grid; gap: 0.5rem; color: var(--muted); }
+  .footer-marque .marque-nom { color: var(--ink); }
+  .newsletter { display: grid; gap: 0.6rem; grid-column: span 1; }
+  .nl-row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nl-row input { flex: 1 1 160px; min-width: 0; }
+  .footer-bas { padding-block: 1.25rem 2rem; color: var(--muted); font-size: var(--step--1); border-top: 1px solid var(--line); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
