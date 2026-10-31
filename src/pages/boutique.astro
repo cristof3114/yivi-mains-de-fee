@@ -1,17 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProductCard from '../components/ProductCard.astro';
-import { sacs, prixMin, prixMax } from '../data/sacs.js';
+import { sacs } from '../data/sacs.js';
 const dispo = sacs.filter((s) => !s.vendu);
 const partis = sacs.filter((s) => s.vendu);
 const occasions = [...new Set(sacs.flatMap((s) => s.occasions))];
 ---
-<Base title="Boutique" description={`Tous les sacs en perles de Yivi mains de fée : pochettes de soirée, sacs de mariage, mini sacs, de ${prixMin} à ${prixMax} €.`}>
+<Base title="Boutique" description="Tous les sacs en perles de Yivi mains de fée : pochettes de soirée, sacs de mariage, mini sacs, à partir de 50 €.">
   <section class="wrap section">
     <div class="section-tete">
       <p class="etiquette">Boutique</p>
       <h1>Les sacs</h1>
-      <p class="lead">Les pièces uniques n'existent qu'en un exemplaire. Les modèles « faits à la commande » sont retissés pour vous et expédiés sous 2 à 3 semaines.</p>
+      <p class="lead">Les pièces uniques n'existent qu'en un ou deux exemplaires. Les modèles « faits à la commande » sont retissés pour vous et expédiés sous 2 à 3 semaines.</p>
     </div>
 
     <div class="filtres" role="group" aria-label="Filtrer par occasion">
@@ -28,7 +28,7 @@ const occasions = [...new Set(sacs.flatMap((s) => s.occasions))];
         <div class="section-tete">
           <p class="etiquette">Déjà adoptés</p>
           <h2>Ils ont trouvé leur place</h2>
-          <p class="lead">Un modèle vous plaît ? Valérie peut tisser une pièce proche, dans vos couleurs.</p>
+          <p class="lead">Un modèle vous plaît ? Yivi peut tisser une pièce proche, dans vos couleurs.</p>
         </div>
         <div class="grille-sacs">
           {partis.map((sac) => <ProductCard sac={sac} />)}

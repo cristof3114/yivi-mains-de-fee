@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import BeadBag from '../components/BeadBag.astro';
 import ProductCard from '../components/ProductCard.astro';
-import { sacs, prixMin, prixMax, heuresMin, heuresMax } from '../data/sacs.js';
+import { sacs } from '../data/sacs.js';
 const vedette = sacs[0];
 const selection = sacs.filter((s) => !s.vendu).slice(0, 3);
 ---
@@ -10,8 +10,8 @@ const selection = sacs.filter((s) => !s.vendu).slice(0, 3);
   <section class="hero wrap">
     <div class="hero-texte">
       <p class="etiquette">Sacs en perles faits main</p>
-      <h1>Tissés perle <em>après</em> perle, par Valérie.</h1>
-      <p class="lead">Chaque sac demande de {heuresMin} à {heuresMax} heures de travail et plusieurs milliers de perles. Des pièces uniques et des modèles retissés pour vous, de {prixMin} à {prixMax} €.</p>
+      <h1>Tissés perle <em>après</em> perle, par Yivi.</h1>
+      <p class="lead">Chaque sac demande de 8 à 30 heures de travail et plusieurs centaines de perles. Des pièces uniques et des modèles retissés pour vous, à partir de 50 €.</p>
       <div class="hero-actions">
         <a class="btn" href="/boutique">Voir les créations</a>
         <a class="btn btn-ligne" href="/atelier">Découvrir l'atelier</a>
@@ -47,12 +47,12 @@ const selection = sacs.filter((s) => !s.vendu).slice(0, 3);
         <li>
           <span class="etape-num">1</span>
           <h3>Le dessin et les couleurs</h3>
-          <p>Valérie dessine le motif sur une grille, perle par perle, puis choisit les couleurs et les finitions de ses perles : nacrées, brillantes ou mates.</p>
+          <p>Yivi dessine le motif sur une grille, perle par perle, puis choisit les teintes parmi de multiples modèles de perles.</p>
         </li>
         <li>
           <span class="etape-num">2</span>
           <h3>Le tissage</h3>
-          <p>Les perles sont cousues une à une. Une pochette de soirée, c'est plus de 4 000 perles et près de deux journées de travail.</p>
+          <p>Les perles sont cousues une à une. Une pochette de soirée, c'est plusieurs centaines de perles et près de deux journées de travail.</p>
         </li>
         <li>
           <span class="etape-num">3</span>
@@ -69,7 +69,7 @@ const selection = sacs.filter((s) => !s.vendu).slice(0, 3);
       <h2>Un sac à vos couleurs</h2>
     </div>
     <div class="sm-texte">
-      <p class="lead">Pour un mariage, un cadeau ou une tenue bien précise, Valérie crée votre sac. Vous lui donnez l'occasion et vos couleurs, elle vous envoie un devis gratuit.</p>
+      <p class="lead">Pour un mariage, un cadeau ou une tenue bien précise, Yivi crée votre sac. Vous lui donnez l'occasion et vos couleurs, elle vous envoie un devis gratuit.</p>
       <a class="btn" href="/sur-mesure">Demander un devis</a>
     </div>
   </section>
