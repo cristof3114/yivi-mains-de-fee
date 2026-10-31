@@ -42,18 +42,18 @@ const jsonld = {
 
         {sac.vendu ? (
           <div class="achat">
-            <p class="statut statut-vendu">Ce sac a trouvé sa propriétaire.</p>
+            <p class="statut statut-vendu">Ce sac a déjà été adopté.</p>
             <a class="btn" href="/sur-mesure">Commander un modèle proche</a>
           </div>
         ) : sac.stripeLink ? (
           <div class="achat">
             <a class="btn" href={sac.stripeLink}>Acheter · {euros(sac.prix)}</a>
-            <p class="achat-note">{sac.unique ? 'Exemplaire unique, expédié sous 48 h.' : 'Tissé pour vous, expédié sous 2 à 3 semaines.'}</p>
+            <p class="achat-note">{sac.unique ? 'Exemplaire unique, expédié sous 48 h ouvrées.' : 'Tissé pour vous, expédié sous 2 à 3 semaines.'}</p>
           </div>
         ) : (
           <div class="achat">
             <a class="btn" href="/contact">Réserver ce sac</a>
-            <p class="achat-note">Le paiement en ligne sera activé au lancement du site. {sac.unique ? 'Exemplaire unique, expédié sous 48 h.' : 'Tissé pour vous, expédié sous 2 à 3 semaines.'}</p>
+            <p class="achat-note">Le paiement en ligne arrive bientôt : en attendant, écrivez à Yivi pour réserver ce sac. {sac.unique ? 'Exemplaire unique, expédié sous 48 h ouvrées.' : 'Tissé pour vous, expédié sous 2 à 3 semaines.'}</p>
           </div>
         )}
 
@@ -65,18 +65,18 @@ const jsonld = {
             <div><dt>Tissage</dt><dd>{sac.heures} heures</dd></div>
             <div><dt>Dimensions</dt><dd>{sac.dimensions}</dd></div>
             <div><dt>Poids</dt><dd>{sac.poids}</dd></div>
-            <div><dt>Contient</dt><dd>{sac.contenance}</dd></div>
+            <div><dt>On y glisse</dt><dd>{sac.contenance}</dd></div>
             <div><dt>Matière</dt><dd>{sac.perlesType}</dd></div>
           </dl>
         </div>
 
         <details>
           <summary>Livraison et retours</summary>
-          <p>Colissimo suivi ou point relais Mondial Relay, en France et en Europe. Livraison offerte dès 100 €. Vous avez 14 jours pour changer d'avis sur les sacs du catalogue. <a href="/livraison-retours">Tous les détails</a></p>
+          <p>Colissimo suivi ou point relais Mondial Relay, en France et en Europe. Livraison offerte en France dès 100 €. Vous avez 14 jours pour changer d'avis sur un sac du catalogue. <a href="/livraison-retours">Tous les détails</a></p>
         </details>
         <details>
           <summary>Entretien</summary>
-          <p>Rangez le sac à plat, à l'abri du soleil direct. Pour le nettoyer, un chiffon doux légèrement humide suffit ; évitez de le plier.</p>
+          <p>Rangez-le à plat, sans le plier, à l'abri du soleil. Pour le nettoyer, un chiffon doux à peine humide suffit.</p>
         </details>
       </div>
     </div>

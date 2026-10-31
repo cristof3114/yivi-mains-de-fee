@@ -1,6 +1,6 @@
 ---
 interface Props { title: string; description?: string }
-const { title, description = 'Sacs en perles tissés à la main par Valérie. Pièces uniques et modèles faits à la commande, de 50 à 140 €.' } = Astro.props;
+const { title, description = 'Sacs en perles tissés à la main par Yivi. Pièces uniques et modèles faits à la commande, à partir de 50 €.' } = Astro.props;
 const fullTitle = title === 'Accueil' ? 'Yivi mains de fée' : `${title} · Yivi mains de fée`;
 const path = Astro.url.pathname.replace(/\.html$/, '');
 const nav = [
@@ -25,7 +25,6 @@ const nav = [
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" />
 </head>
 <body>
-  <p class="apercu">Aperçu du site : les sacs, illustrations et textes sont des exemples en attendant les photos de Valérie.</p>
   <header class="site-header">
     <div class="wrap header-inner">
       <a href="/" class="marque" aria-label="Yivi mains de fée, accueil">
@@ -50,7 +49,7 @@ const nav = [
     <div class="wrap footer-grid">
       <div class="footer-marque">
         <p class="marque-nom">Yivi</p>
-        <p>Sacs en perles tissés à la main, perle après perle, par Valérie.</p>
+        <p>Sacs en perles tissés à la main, perle après perle, par Yivi.</p>
       </div>
       <div>
         <p class="etiquette">Boutique</p>
