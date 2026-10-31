@@ -123,4 +123,12 @@ export const sacs = [
   },
 ];
 
-export const euros = (n) => `${n} €`;
+export const euros = (n) => `${n} €`;
+
+// Fourchettes calculées à partir du catalogue, pour que les textes restent justes quand on ajoute un sac.
+const prixListe = sacs.map((s) => s.prix);
+const heuresListe = sacs.map((s) => s.heures);
+export const prixMin = Math.min(...prixListe);
+export const prixMax = Math.max(...prixListe);
+export const heuresMin = Math.min(...heuresListe);
+export const heuresMax = Math.max(...heuresListe);

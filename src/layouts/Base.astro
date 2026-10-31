@@ -1,6 +1,7 @@
 ---
+import { prixMin, prixMax } from '../data/sacs.js';
 interface Props { title: string; description?: string }
-const { title, description = 'Sacs en perles tissés à la main par Valérie. Pièces uniques et modèles faits à la commande, de 50 à 140 €.' } = Astro.props;
+const { title, description = `Sacs en perles tissés à la main par Valérie. Pièces uniques et modèles faits à la commande, de ${prixMin} à ${prixMax} €.` } = Astro.props;
 const fullTitle = title === 'Accueil' ? 'Yivi mains de fée' : `${title} · Yivi mains de fée`;
 const path = Astro.url.pathname.replace(/\.html$/, '');
 const nav = [
